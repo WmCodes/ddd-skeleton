@@ -4,7 +4,7 @@ plugins {
 }
 
 allprojects {
-    group = 'finexos'
+    group = 'demo'
     version = '1.0.0'
 
     apply from: "$rootDir/gradle/config/scripts/java.gradle"
