@@ -9,6 +9,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class ExceptionsTest {
 
     @Test
+    void evaluateCatchesCheckedException() {
+        assertThatThrownBy(() -> Exceptions.evaluate(() -> {
+            throw new Exception("test");
+        })).isInstanceOf(RuntimeException.class);
+    }
+
+    @Test
     @DisplayName("execute 执行Runnable并捕获异常")
     void executeExecutesRunnable() {
         Exceptions.execute(() -> {

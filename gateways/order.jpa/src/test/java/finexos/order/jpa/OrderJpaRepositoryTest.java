@@ -145,4 +145,19 @@ class OrderJpaRepositoryTest {
 
         assertThat(found.status()).isEqualTo(OrderStatus.CANCELLED);
     }
+
+    @Test
+    @DisplayName("save update with new items")
+    void saveUpdateWithItems() {
+        Order order = Order.create("customer-1");
+        order.addItem("product-1", 2, 10.0);
+        repository.save(order);
+
+        order.addItem("product-2", 1, 25.0);
+        repository.save(order);
+
+        Order found = repository.findById(order.id());
+        assertThat(found.items()).hasSize(2);
+        assertThat(found.totalAmount()).isEqualTo(45.0);
+    }
 }

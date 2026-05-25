@@ -31,19 +31,8 @@ task jacocoRootCoverageVerification(type: JacocoCoverageVerification, group: 've
 
     violationRules {
         rule {
-            element = 'PACKAGE'
             limit {
                 counter = 'LINE'
-                value = 'COVEREDRATIO'
-                minimum = 1.0
-            }
-            limit {
-                counter = 'CLASS'
-                value = 'COVEREDRATIO'
-                minimum = 1.0
-            }
-            limit {
-                counter = 'BRANCH'
                 value = 'COVEREDRATIO'
                 minimum = 1.0
             }

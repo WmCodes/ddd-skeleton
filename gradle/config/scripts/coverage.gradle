@@ -1,28 +1,30 @@
-if (plugins.hasPlugin('java') || plugins.hasPlugin('java-library')) {
-    apply plugin: 'jacoco'
+afterEvaluate { project ->
+    if (project.plugins.hasPlugin('java') || project.plugins.hasPlugin('java-library')) {
+        apply plugin: 'jacoco'
 
-    jacoco {
-        toolVersion = "0.8.11"
-    }
-
-    jacocoTestReport {
-        reports {
-            html.required = true
-            xml.required = true
+        jacoco {
+            toolVersion = "0.8.11"
         }
-    }
 
-    jacocoTestCoverageVerification {
-        violationRules {
-            rule {
-                limit {
-                    counter = 'LINE'
-                    value = 'COVEREDRATIO'
-                    minimum = 1.0
+        jacocoTestReport {
+            reports {
+                html.required = true
+                xml.required = true
+            }
+        }
+
+        jacocoTestCoverageVerification {
+            violationRules {
+                rule {
+                    limit {
+                        counter = 'LINE'
+                        value = 'COVEREDRATIO'
+                        minimum = 1.0
+                    }
                 }
             }
         }
-    }
 
-    check.dependsOn jacocoTestCoverageVerification
+        check.dependsOn jacocoTestCoverageVerification
+    }
 }

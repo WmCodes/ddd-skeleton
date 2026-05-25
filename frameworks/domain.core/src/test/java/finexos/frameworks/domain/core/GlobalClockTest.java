@@ -18,6 +18,13 @@ class GlobalClockTest {
     }
 
     @Test
+    void privateConstructor() throws Exception {
+        var constructor = GlobalClock.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        constructor.newInstance();
+    }
+
+    @Test
     @DisplayName("now 返回当前时间")
     void nowReturnsCurrentTime() {
         Instant now = GlobalClock.now();

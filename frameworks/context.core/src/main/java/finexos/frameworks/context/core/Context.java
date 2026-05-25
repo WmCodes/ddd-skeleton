@@ -1,6 +1,9 @@
 package finexos.frameworks.context.core;
 
-public class Context {
+public final class Context {
+
+    private Context() {
+    }
     private static ThreadLocal<Operator> operator = new ThreadLocal<>();
 
     public static void resetOperator(Operator operator) {

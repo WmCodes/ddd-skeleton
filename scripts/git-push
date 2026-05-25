@@ -1,0 +1,21 @@
+#!/bin/bash
+# git-push — push 前运行全量检查，风格/覆盖率不通过则拒绝推送
+set -e
+
+echo "==> Running pre-push validation..."
+echo ""
+
+echo "==> Step 1: Checkstyle + Tests + Coverage verification..."
+if ! ./gradlew --no-daemon check 2>&1; then
+    echo ""
+    echo "ERROR: Checkstyle/Tests/Coverage 未通过！请修复后重试。"
+    echo "  - Checkstyle: 代码风格违规"
+    echo "  - Tests: 测试未通过"
+    echo "  - JaCoCo: LINE 覆盖率未达到 100%"
+    exit 1
+fi
+echo "    ✓ Checkstyle / Tests / Coverage all passed"
+echo ""
+
+echo "==> Steps passed. Pushing..."
+git push "$@"

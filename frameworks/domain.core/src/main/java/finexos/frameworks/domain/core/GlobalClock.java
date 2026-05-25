@@ -3,8 +3,11 @@ package finexos.frameworks.domain.core;
 import java.time.Clock;
 import java.time.Instant;
 
-public class GlobalClock {
+public final class GlobalClock {
     private static Clock clock;
+
+    private GlobalClock() {
+    }
 
     public static Instant now() {
         return clock.instant();
