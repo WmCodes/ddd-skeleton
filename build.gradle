@@ -1,0 +1,42 @@
+plugins {
+    id 'org.springframework.boot' version '3.2.0'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+allprojects {
+    group = 'finexos'
+    version = '1.0.0'
+
+    apply from: "$rootDir/gradle/config/scripts/java.gradle"
+    apply from: "$rootDir/gradle/config/scripts/junit.gradle"
+    apply from: "$rootDir/gradle/config/scripts/style.gradle"
+    apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
+
+    repositories {
+        mavenCentral()
+    }
+
+    if (tasks.findByName('test') != null && tasks.findByName('checkstyleMain') != null) {
+        test.dependsOn(checkstyleMain)
+    }
+}
+
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'io.spring.dependency-management'
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:$springBootVersion"
+        }
+    }
+
+    dependencies {
+        compileOnly "org.projectlombok:lombok:$lombokVersion"
+        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+        testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+        testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    }
+}
+
+apply from: "$rootDir/gradle/config/scripts/coverage-all.gradle"

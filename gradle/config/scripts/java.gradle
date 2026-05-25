@@ -1,0 +1,13 @@
+if (plugins.hasPlugin('java') || plugins.hasPlugin('java-library')) {
+    sourceCompatibility = 21
+    targetCompatibility = 21
+}
+
+repositories {
+    mavenCentral()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-parameters"
+}

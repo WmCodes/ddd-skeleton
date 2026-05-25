@@ -1,0 +1,6 @@
+dependencies {
+    api project(":domain.core")
+    api project(":application.core")
+    implementation "org.springframework.boot:spring-boot"
+    implementation "org.springframework:spring-tx"
+}

@@ -1,0 +1,71 @@
+class CoverageExtension {
+    @SuppressWarnings("unused") excludes = []
+}
+
+apply plugin: 'java'
+apply plugin: 'jacoco'
+
+project.ext.set('coverage', new CoverageExtension())
+
+boolean isJacocoProject(Project aProject) {
+    if (aProject.subprojects.size() > 0 && aProject.name != rootProject.name) return false
+    return aProject.pluginManager.hasPlugin('jacoco')
+}
+
+task jacocoRootReport(type: JacocoReport, group: 'verification') {
+    dependsOn subprojects.collect { it.tasks.withType(Test).findAll() }.flatten()
+
+    additionalSourceDirs.setFrom(files(subprojects.sourceSets.main.allSource.srcDirs))
+    sourceDirectories.setFrom(files(subprojects.sourceSets.main.allSource.srcDirs))
+    classDirectories.setFrom(files(subprojects.sourceSets.main.output))
+    executionData.setFrom(fileTree(dir: rootDir, include: '**/build/jacoco/test.exec'))
+
+    reports {
+        html.required = true
+        xml.required = true
+    }
+}
+
+task jacocoRootCoverageVerification(type: JacocoCoverageVerification, group: 'verification') {
+    dependsOn jacocoRootReport
+
+    violationRules {
+        rule {
+            element = 'PACKAGE'
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 1.0
+            }
+            limit {
+                counter = 'CLASS'
+                value = 'COVEREDRATIO'
+                minimum = 1.0
+            }
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 1.0
+            }
+        }
+    }
+
+    additionalSourceDirs.setFrom(files(subprojects.sourceSets.main.allSource.srcDirs))
+    sourceDirectories.setFrom(files(subprojects.sourceSets.main.allSource.srcDirs))
+    classDirectories.setFrom(files(subprojects.sourceSets.main.output))
+    executionData.setFrom(fileTree(dir: rootDir, include: '**/build/jacoco/test.exec'))
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, excludes: coverage.excludes)
+        }))
+    }
+}
+
+task testReport(type: TestReport, group: 'verification') {
+    destinationDir = file("$buildDir/reports/allTests")
+    reportOn subprojects*.test
+}
+
+jacocoRootReport.dependsOn(testReport)
+check.dependsOn(jacocoRootCoverageVerification)

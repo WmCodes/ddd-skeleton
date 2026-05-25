@@ -1,0 +1,34 @@
+apply plugin: 'idea'
+
+idea {
+    project {
+        jdkName = JavaVersion.VERSION_21
+        languageLevel = JavaVersion.VERSION_21
+
+        vcs = "Git"
+    }
+
+    workspace.iws.withXml { provider ->
+        def junitDefaults = provider.node.component.find { it.@name == 'RunManager' }.configuration.find {
+            it.@type == 'JUnit'
+        }
+        junitDefaults.option.find { it.@name == 'WORKING_DIRECTORY' }.@value = '$MODULE_DIR$'
+    }
+}
+
+task buildDockerImage(type: Exec, group: 'build') {
+    commandLine = ['docker', 'build', '-t', getDockerImageName(), project.projectDir.path]
+}
+
+task pushDockerImage(type: Exec, group: 'build') {
+    dependsOn(buildDockerImage)
+    commandLine = ['docker', 'push', getDockerImageName()]
+}
+
+task push(group: "build") {
+    dependsOn(pushDockerImage)
+}
+
+String getDockerImageName() {
+    return "197471891985.dkr.ecr.eu-west-2.amazonaws.com/${rootProject.name}.${project.name}:latest"
+}

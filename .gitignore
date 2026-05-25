@@ -1,0 +1,41 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/.gitkeep
+!gradle/config/.gitkeep
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+
+# Lombok
+lombok-config
+*.lombok
+
+# Coverage
+jacoco/
+build/reports/
+
+# OS
+.DS_Store
+Thumbs.db
+ehcache/
+
+# Maven
+target/
+
+# Application
+*.log
+logs/
+
+# Flyway
+flyway/

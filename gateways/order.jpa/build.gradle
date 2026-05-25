@@ -1,0 +1,9 @@
+dependencies {
+    api project(":order")
+    api project(":domain.core")
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    runtimeOnly "org.postgresql:postgresql"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.testcontainers:postgresql:${testcontainersVersion}"
+    testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
+}

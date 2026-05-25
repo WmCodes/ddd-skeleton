@@ -1,0 +1,29 @@
+rootProject.name = 'demo-skeleton'
+
+file("modules").eachFile { f ->
+    if (f.isDirectory()) {
+        include f.name
+        project(":${f.name}").projectDir = f
+    }
+}
+
+file("frameworks").eachFile { f ->
+    if (f.isDirectory()) {
+        include f.name
+        project(":${f.name}").projectDir = f
+    }
+}
+
+file("gateways").eachFile { f ->
+    if (f.isDirectory()) {
+        include f.name
+        project(":${f.name}").projectDir = f
+    }
+}
+
+file("application").eachFile { f ->
+    if (f.isDirectory()) {
+        include f.name
+        project(":${f.name}").projectDir = f
+    }
+}

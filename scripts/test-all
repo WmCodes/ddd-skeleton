@@ -1,0 +1,5 @@
+#!/bin/bash
+# 运行完整测试 + 代码检查
+set -e
+echo "Running tests and checks..."
+./gradlew check

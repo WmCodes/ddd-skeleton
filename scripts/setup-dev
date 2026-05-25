@@ -1,0 +1,6 @@
+#!/bin/bash
+# 启动开发环境（Docker 启动 PostgreSQL）
+set -e
+echo "Starting development environment..."
+docker-compose up -d postgres
+echo "PostgreSQL is running at localhost:5432"
